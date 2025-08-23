@@ -11,14 +11,13 @@ auth = "Basic " + auth;
 
 const porxyChain = function (listenPort) {
 
-  const settings = {target: `https://vvvsss.lichon.cc`};
-  const proxy = httpProxy.createProxyServer(settings);
+  const proxy = httpProxy.createProxyServer({ target: 'http://vs.lichon.cc', ws: true, changeOrigin: true });
 
   proxy.on('error', function(err) {
     console.log('ERR:',err);
   });
   const server = http.createServer(function (req, res) {
-    proxy.web(req, res, settings)
+    proxy.web(req, res, {})
   });
   server.on('upgrade', function (req, socket, head) {
     proxy.ws(req, socket, head)
