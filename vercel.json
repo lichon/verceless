@@ -1,4 +1,10 @@
 {
+	"routes": [
+		{
+			"src": "/api/(.*)",
+			"dest": "/api"
+		}
+	],
 	"rewrites": [
 		{
 			"source": "/gemini/:path*",
