@@ -9,17 +9,33 @@ app.get('/api/rooms/:name/message', async (c) => {
   return c.text(`hello ${c.req.param('name')} ${process.env.SUPABASE_URL}`)
 }).post('/api/rooms/:name/message', async (c) => {
   const name = c.req.param('name')
-  if (!name?.length || name === 'null' || name === 'undefined') {
+  if (!name?.length) {
     return c.text('invalid request', 400)
   }
-  const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_KEY!)
-  const content = await c.req.json()
-  const resp = await supabase.functions.invoke<string>('message', {
+
+  const body = await c.req.json()
+  return fetch(`${process.env.SUPABASE_URL}/realtime/v1/api/broadcast`, {
     method: 'POST',
-    body: JSON.stringify({ room: name, content})
-  })
-  console.log(`resp ${resp.data} error ${resp.error}`)
-  return c.json({ error: resp.error })
+    headers: {
+      'apikey': process.env.SUPABASE_KEY!,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      private: false,
+      messages: [
+        {
+          topic: "room:asa123:messages",
+          event: "message",
+          payload: {
+            id: crypto.randomUUID(),
+            content: body.content,
+            sender: "nickname",
+            timestamp: new Date().toISOString()
+          }
+        }
+      ]
+    })
+  });
 });
 
 export default app;
