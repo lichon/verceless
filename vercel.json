@@ -5,8 +5,16 @@
 			"destination": "/api"
 		},
 		{
-			"source": "/ws",
-			"destination": "https://hk.lichon.cc"
+			"source": "/gemini/:path*",
+			"destination": "https://generativelanguage.googleapis.com/:path"
+		},
+		{
+			"source": "/openai/:path*",
+			"destination": "https://api.openai.com/:path"
+		},
+		{
+			"source": "/claude/:path*",
+			"destination": "https://api.anthropic.com/:path"
 		}
 	]
 }
