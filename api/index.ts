@@ -24,6 +24,7 @@ app.get('/api/rooms/:name/message', async (c) => {
       timestamp: new Date().toISOString(),
     },
   })
+  console.log(`send resp ${resp}`)
   return c.json({ message: resp })
 });
 
