@@ -1,53 +1,9 @@
-"use strict";
+import { Hono } from 'hono';
 
-const http = require('http');
-const request = http.request;
-const net = require('net');
-const httpProxy = require('http-proxy');
+const app = new Hono();
 
-let auth = "user:pass";
-auth = new Buffer(auth).toString('base64');
-auth = "Basic " + auth;
+app.get('/api', (c) => c.text('Hello from Hono!'));
 
-const porxyChain = function (listenPort) {
+app.get('/api/json', (c) => c.json({ message: 'This is a JSON response.' }));
 
-  const proxy = httpProxy.createProxyServer({ target: 'http://vs.lichon.cc', ws: true, changeOrigin: true });
-
-  proxy.on('error', function(err) {
-    console.log('ERR:',err);
-  });
-  const server = http.createServer(function (req, res) {
-    proxy.web(req, res, {})
-  });
-  server.on('upgrade', function (req, socket, head) {
-    proxy.ws(req, socket, head)
-  })
-  server.on('connect', function (req, socket) {
-    if (!req.headers['proxy-authorization'] || req.headers['proxy-authorization'] !== auth) {
-      socket.write("HTTP/1.1 401 UNAUTHORIZED\r\n\r\n");
-      socket.end();
-      socket.destroy();
-      return;
-    }
-    delete req.headers['proxy-authorization'];
-    socket.on('error', function () {
-      console.log('socket error');
-    });
-    const parts = req.url.split(':', 2);
-    const conn = net.connect(parts[1], parts[0], function () {
-      socket.write("HTTP/1.1 200 OK\r\n\r\n");
-      socket.pipe(conn);
-      conn.pipe(socket);
-    });
-    conn.on('error', function () {
-      socket.write("HTTP/1.1 500 SERVER ERROR\r\n\r\n");
-      socket.end();
-      socket.destroy();
-    });
-
-  });
-  server.listen(listenPort);
-  console.log('proxy listening on port ' + listenPort);
-};
-
-porxyChain(3000)
+export default app;
