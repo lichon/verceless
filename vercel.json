@@ -1,10 +1,6 @@
 {
 	"rewrites": [
 		{
-			"source": "/api:path*",
-			"destination": "/api:path*"
-		},
-		{
 			"source": "/gemini/:path*",
 			"destination": "https://generativelanguage.googleapis.com/:path*"
 		},
