@@ -1,9 +1,11 @@
 {
-	"rewrites": [
+	"routes": [
 		{
 			"src": "/api/(.*)",
 			"dest": "/api/index.ts"
-		},
+		}
+	],
+	"rewrites": [
 		{
 			"source": "/gemini/:path*",
 			"destination": "https://generativelanguage.googleapis.com/:path*"
