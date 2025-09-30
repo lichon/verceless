@@ -14,18 +14,12 @@ app.get('/api/rooms/:name/message', async (c) => {
   }
   const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_KEY!)
   const content = await c.req.json()
-  const ch = supabase.channel(`room:${name}:messages`)
-  const resp = await ch.send({
-    type: 'broadcast',
-    event: 'message',
-    payload: {
-      content,
-      sender: 'channel',
-      timestamp: new Date().toISOString(),
-    },
+  const resp = await supabase.functions.invoke<string>('message', {
+    method: 'POST',
+    body: JSON.stringify({ room: name, content})
   })
-  console.log(`send resp ${resp}`)
-  return c.json({ message: resp })
+  console.log(`resp error ${resp.error}`)
+  return c.json({ error: resp.error })
 });
 
 export default app;
