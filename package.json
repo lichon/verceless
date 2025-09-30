@@ -11,7 +11,11 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+		"@supabase/supabase-js": "^2.58.0",
 		"hono": "^4.9.9"
 	},
-	"type": "module"
+	"type": "module",
+	"devDependencies": {
+		"@types/node": "^20.19.18"
+	}
 }
