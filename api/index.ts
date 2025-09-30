@@ -3,11 +3,7 @@ import { createClient } from '@supabase/supabase-js'
 
 const app = new Hono();
 
-app.get('*', (c) => c.text('Hello Hono!'));
-
-app.get('/api', (c) => c.text('Hello api!'));
-
-app.get('/api/test', (c) => c.text('Hello test!'));
+app.all('*', (c) => c.text(`hello ${c.req.path}`));
 
 app.get('/api/rooms/:name/message', async (c) => {
   return c.text(`hello ${c.req.param('name')} ${process.env.SUPABASE_URL}`)
