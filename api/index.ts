@@ -7,7 +7,11 @@ const app = new Hono();
 
 app.get('/api', (c) => c.text('Hello from Hono!'));
 
-app.post('/api/rooms/:name/message', async (c) => {
+app.get('/api/test', (c) => c.text('Hello test path!'));
+
+app.get('/api/rooms/:name/message', async (c) => {
+  return c.text(`hello ${c.req.param('name')} ${process.env.SUPABASE_URL}`)
+}).post('/api/rooms/:name/message', async (c) => {
   const name = c.req.param('name')
   if (!name?.length || name === 'null' || name === 'undefined') {
     return c.text('invalid request', 400)
@@ -23,7 +27,7 @@ app.post('/api/rooms/:name/message', async (c) => {
       timestamp: new Date().toISOString(),
     },
   })
-  c.json({ message: 'ok' })
+  return c.json({ message: 'ok' })
 });
 
 export default app;
