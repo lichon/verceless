@@ -18,7 +18,7 @@ app.get('/api/rooms/:name/message', async (c) => {
     method: 'POST',
     body: JSON.stringify({ room: name, content})
   })
-  console.log(`resp error ${resp.error}`)
+  console.log(`resp ${resp.data} error ${resp.error}`)
   return c.json({ error: resp.error })
 });
 
