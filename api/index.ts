@@ -1,9 +1,9 @@
 import { Hono } from 'hono';
 import { createClient } from '@supabase/supabase-js'
 
-const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_KEY!)
-
 const app = new Hono();
+
+app.get('/', (c) => c.text('Hello api path!'));
 
 app.get('/api', (c) => c.text('Hello from Hono!'));
 
@@ -16,6 +16,7 @@ app.get('/api/rooms/:name/message', async (c) => {
   if (!name?.length || name === 'null' || name === 'undefined') {
     return c.text('invalid request', 400)
   }
+  const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_KEY!)
   const content = await c.req.json()
   const ch = supabase.channel(`room:${name}:messages`)
   await ch.send({
