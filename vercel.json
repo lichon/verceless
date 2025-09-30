@@ -1,8 +1,8 @@
 {
 	"rewrites": [
 		{
-			"src": "/(.*)",
-			"dest": "/api"
+			"src": "/api/(.*)",
+			"dest": "/api/index.ts"
 		},
 		{
 			"source": "/gemini/:path*",
