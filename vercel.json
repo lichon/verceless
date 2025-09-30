@@ -5,6 +5,10 @@
 			"destination": "/api/index.ts"
 		},
 		{
+			"source": "/cfstream/message",
+			"destination": "https://vmxnnwegxyikbuxyfrtj.supabase.co/functions/v1/message"
+		},
+		{
 			"source": "/gemini/:path*",
 			"destination": "https://generativelanguage.googleapis.com/:path*"
 		},
